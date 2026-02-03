@@ -158,6 +158,73 @@ button {
     50% { transform: scale(1.15); box-shadow: 0 0 35px #ff4d6d; }
     100% { transform: scale(1); box-shadow: 0 0 10px #ffb3c6; }
 }
+
+/* 3D hearts */
+.heart {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(45deg, #ff4d6d, #ffb3c6);
+    transform: rotate(-45deg);
+    pointer-events: none;
+    z-index: 999;
+    animation: floatHeart 3s ease-out forwards;
+}
+
+.heart::before,
+.heart::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: inherit;
+    border-radius: 50%;
+}
+
+.heart::before { top: -10px; left: 0; }
+.heart::after { left: 10px; top: 0; }
+
+@keyframes floatHeart {
+    0% { transform: translate(0,0) rotate(-45deg) scale(0.8); opacity: 1; }
+    50% { transform: translate(var(--x), var(--y)) rotate(0deg) scale(1); opacity: 1; }
+    100% { transform: translate(calc(var(--x) * 2), calc(var(--y) - 300px)) rotate(30deg) scale(0.5); opacity: 0; }
+}
+
+/* Confetti */
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background-color: pink;
+    opacity: 0.9;
+    pointer-events: none;
+    z-index: 998;
+    transform: rotate(45deg);
+    animation: confettiFall 3s linear forwards;
+}
+
+@keyframes confettiFall {
+    0% { transform: translate(0,0) rotate(0deg); opacity: 1; }
+    100% { transform: translate(var(--cx), var(--cy)) rotate(720deg); opacity: 0; }
+}
+
+/* Sparkle overlay */
+.sparkle {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: radial-gradient(circle, #fff8, #ff4d6d00);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 997;
+    animation: sparkleTwinkle 2s ease-in-out forwards;
+}
+
+@keyframes sparkleTwinkle {
+    0% { opacity: 0; transform: scale(0.3) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+    100% { opacity: 0; transform: scale(0) rotate(360deg); }
+}
 </style>
 </head>
 
@@ -181,7 +248,7 @@ button {
     </p>
 
     <div class="buttons">
-        <button id="yesBtn" onclick="accept()">Yes, forever 💍</button>
+        <button id="yesBtn" onclick="accept(event)">Yes, forever 💍</button>
         <button id="noBtn">No 🙈</button>
     </div>
 </div>
@@ -223,8 +290,62 @@ if ("ontouchstart" in window) {
     });
 }
 
-function accept() {
+/* Yes button fun with hearts, confetti, and sparkle */
+function accept(event) {
     document.getElementById("proposal").classList.add("show");
+
+    const rect = event.target.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    // Heart explosion
+    for (let i = 0; i < 60; i++) createHeart(centerX, centerY);
+
+    // Floating hearts from bottom
+    for (let i = 0; i < 40; i++) createHeart(Math.random() * window.innerWidth, window.innerHeight + 50);
+
+    // Confetti burst
+    for (let i = 0; i < 100; i++) createConfetti(centerX, centerY);
+
+    // Sparkle overlay
+    for (let i = 0; i < 80; i++) createSparkle(centerX, centerY);
+}
+
+function createHeart(startX, startY) {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = startX + "px";
+    heart.style.top = startY + "px";
+    const xMove = (Math.random() - 0.5) * 400 + "px";
+    const yMove = - (150 + Math.random() * 400) + "px";
+    heart.style.setProperty('--x', xMove);
+    heart.style.setProperty('--y', yMove);
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 3500);
+}
+
+function createConfetti(startX, startY) {
+    const conf = document.createElement('div');
+    conf.classList.add('confetti');
+    conf.style.left = startX + "px";
+    conf.style.top = startY + "px";
+    const xMove = (Math.random() - 0.5) * 600 + "px";
+    const yMove = 300 + Math.random() * 400 + "px";
+    conf.style.setProperty('--cx', xMove);
+    conf.style.setProperty('--cy', yMove);
+    const colors = ["#ff4d6d","#ff758c","#ffc0cb","#ffb3c6","#ff6b81"];
+    conf.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+    document.body.appendChild(conf);
+    setTimeout(() => conf.remove(), 3000);
+}
+
+function createSparkle(centerX, centerY) {
+    const sparkle = document.createElement('div');
+    sparkle.classList.add('sparkle');
+    sparkle.style.left = (centerX + (Math.random() - 0.5) * 400) + "px";
+    sparkle.style.top = (centerY + (Math.random() - 0.5) * 400) + "px";
+    document.body.appendChild(sparkle);
+    setTimeout(() => sparkle.remove(), 2500);
 }
 </script>
 
