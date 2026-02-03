@@ -137,6 +137,7 @@ button {
 .proposal h1 {
     font-size: 42px;
     color: #ffb3c6;
+    text-align: center;
 }
 
 .proposal h2 {
@@ -225,6 +226,16 @@ button {
     50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
     100% { opacity: 0; transform: scale(0) rotate(360deg); }
 }
+
+/* Make sure hearts/confetti scale nicely on small screens */
+@media (max-width: 600px) {
+    .heart { width: 14px; height: 14px; }
+    .heart::before, .heart::after { width: 14px; height: 14px; }
+    .confetti { width: 7px; height: 7px; }
+    .sparkle { width: 4px; height: 4px; }
+    .proposal h1 { font-size: 32px; }
+    .proposal h2 { font-size: 20px; }
+}
 </style>
 </head>
 
@@ -255,7 +266,7 @@ button {
 
 <div class="proposal" id="proposal">
     <div class="ring"></div>
-    <h1>Will you marry me?</h1>
+    <h1>Will you be my Valentine?</h1>
     <h2>— Sumeet</h2>
 </div>
 
