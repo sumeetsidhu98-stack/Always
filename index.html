@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at top, #1a1a1a, #000);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    color: white;
+    padding: 16px;
+}
+
+/* Cinematic particles */
+.particles span {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 50%;
+    animation: drift 14s linear infinite;
+}
+
+@keyframes drift {
+    from { transform: translateY(110vh) scale(0.5); opacity: 0; }
+    to { transform: translateY(-130vh) scale(1); opacity: 1; }
+}
+
+/* Card */
+.card {
+    background: rgba(255,255,255,0.95);
+    color: #222;
+    border-radius: 22px;
+    max-width: 380px;
+    width: 100%;
+    padding: 22px;
+    text-align: center;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    animation: fadeIn 1.6s ease;
+    z-index: 2;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Slow cinematic zoom */
+.photo-wrapper {
+    overflow: hidden;
+    border-radius: 18px;
+    margin-bottom: 18px;
+}
+
+.photo {
+    width: 100%;
+    transform: scale(1);
+    animation: slowZoom 8s ease forwards;
+}
+
+@keyframes slowZoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.08); }
+}
+
+h1 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 18px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+button {
+    padding: 14px;
+    font-size: 18px;
+    border-radius: 40px;
+    border: none;
+    cursor: pointer;
+}
+
+#yesBtn {
+    background: linear-gradient(135deg, #ff4d6d, #ff758c);
+    color: white;
+    box-shadow: 0 10px 30px rgba(255,77,109,0.5);
+}
+
+#noBtn {
+    background: #ddd;
+    color: #444;
+}
+
+/* iPad hover */
+@media (min-width: 768px) and (max-width: 1024px) {
+    #noBtn { position: absolute; }
+}
+
+/* Proposal screen */
+.proposal {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, #1b1b1b, #000);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.5s ease;
+}
+
+.proposal.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.proposal h1 {
+    font-size: 42px;
+    color: #ffb3c6;
+}
+
+.proposal h2 {
+    font-size: 28px;
+    margin-top: 10px;
+}
+
+.ring {
+    width: 80px;
+    height: 80px;
+    border: 3px solid #ffb3c6;
+    border-radius: 50%;
+    margin: 25px auto;
+    animation: ringPulse 2s infinite;
+}
+
+@keyframes ringPulse {
+    0% { transform: scale(1); box-shadow: 0 0 10px #ffb3c6; }
+    50% { transform: scale(1.15); box-shadow: 0 0 35px #ff4d6d; }
+    100% { transform: scale(1); box-shadow: 0 0 10px #ffb3c6; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="particles"></div>
+
+<div class="card">
+    <div class="photo-wrapper">
+        <img src="photos.jpg.jpeg" class="photo">
+    </div>
+
+    <h1>Shilpa ❤️</h1>
+    <p>
+        From quiet moments to loud laughter,<br>
+        every version of life feels right with you.
+    </p>
+    <p>
+        I don’t want perfect days,<br>
+        I want <b>all my days with you</b>.
+    </p>
+
+    <div class="buttons">
+        <button id="yesBtn" onclick="accept()">Yes, forever 💍</button>
+        <button id="noBtn">No 🙈</button>
+    </div>
+</div>
+
+<div class="proposal" id="proposal">
+    <div class="ring"></div>
+    <h1>Will you marry me?</h1>
+    <h2>— Sumeet</h2>
+</div>
+
+<script>
+/* Particles */
+const particles = document.querySelector('.particles');
+setInterval(() => {
+    const p = document.createElement('span');
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.animationDuration = (10 + Math.random() * 10) + 's';
+    particles.appendChild(p);
+    setTimeout(() => p.remove(), 22000);
+}, 350);
+
+/* NO button fun */
+const noBtn = document.getElementById("noBtn");
+
+function moveNo() {
+    noBtn.style.position = "absolute";
+    noBtn.style.left = Math.random() * (window.innerWidth - 160) + "px";
+    noBtn.style.top = Math.random() * (window.innerHeight - 80) + "px";
+}
+
+if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
+    noBtn.addEventListener("mouseenter", moveNo);
+}
+
+if ("ontouchstart" in window) {
+    noBtn.addEventListener("touchstart", e => {
+        e.preventDefault();
+        moveNo();
+    });
+}
+
+function accept() {
+    document.getElementById("proposal").classList.add("show");
+}
+</script>
+
+</body>
+</html>
