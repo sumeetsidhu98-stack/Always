@@ -21,7 +21,7 @@ body {
     padding: 16px;
 }
 
-/* Cinematic particles */
+/* Background particles */
 .particles span {
     position: absolute;
     width: 6px;
@@ -32,8 +32,8 @@ body {
 }
 
 @keyframes drift {
-    from { transform: translateY(110vh) scale(0.5); opacity: 0; }
-    to { transform: translateY(-130vh) scale(1); opacity: 1; }
+    from { transform: translateY(110vh); opacity: 0; }
+    to { transform: translateY(-130vh); opacity: 1; }
 }
 
 /* Card */
@@ -46,33 +46,34 @@ body {
     padding: 22px;
     text-align: center;
     box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-    animation: fadeIn 1.6s ease;
+    animation: fadeIn 1.4s ease;
     z-index: 2;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(30px); }
+    from { opacity: 0; transform: translateY(25px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Slow cinematic zoom */
+/* Image */
 .photo-wrapper {
     overflow: hidden;
     border-radius: 18px;
     margin-bottom: 18px;
 }
 
+@keyframes softFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 .photo {
     width: 100%;
-    transform: scale(1);
-    animation: slowZoom 8s ease forwards;
+    opacity: 0;
+    animation: softFade 1.6s ease forwards;
 }
 
-@keyframes slowZoom {
-    from { transform: scale(1); }
-    to { transform: scale(1.08); }
-}
-
+/* Text */
 h1 {
     font-size: 22px;
     margin-bottom: 10px;
@@ -84,6 +85,7 @@ p {
     margin-bottom: 18px;
 }
 
+/* Buttons */
 .buttons {
     display: flex;
     flex-direction: column;
@@ -109,12 +111,7 @@ button {
     color: #444;
 }
 
-/* iPad hover */
-@media (min-width: 768px) and (max-width: 1024px) {
-    #noBtn { position: absolute; }
-}
-
-/* Proposal screen */
+/* Valentine Screen */
 .proposal {
     position: fixed;
     inset: 0;
@@ -137,7 +134,6 @@ button {
 .proposal h1 {
     font-size: 42px;
     color: #ffb3c6;
-    text-align: center;
 }
 
 .proposal h2 {
@@ -145,6 +141,7 @@ button {
     margin-top: 10px;
 }
 
+/* Ring pulse */
 .ring {
     width: 80px;
     height: 80px;
@@ -155,16 +152,14 @@ button {
 }
 
 @keyframes ringPulse {
-    0% { transform: scale(1); box-shadow: 0 0 10px #ffb3c6; }
     50% { transform: scale(1.15); box-shadow: 0 0 35px #ff4d6d; }
-    100% { transform: scale(1); box-shadow: 0 0 10px #ffb3c6; }
 }
 
-/* 3D hearts */
+/* 3D Hearts */
 .heart {
     position: fixed;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     background: linear-gradient(45deg, #ff4d6d, #ffb3c6);
     transform: rotate(-45deg);
     pointer-events: none;
@@ -176,65 +171,47 @@ button {
 .heart::after {
     content: "";
     position: absolute;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     background: inherit;
     border-radius: 50%;
 }
 
-.heart::before { top: -10px; left: 0; }
-.heart::after { left: 10px; top: 0; }
+.heart::before { top: -9px; left: 0; }
+.heart::after { left: 9px; top: 0; }
 
 @keyframes floatHeart {
-    0% { transform: translate(0,0) rotate(-45deg) scale(0.8); opacity: 1; }
-    50% { transform: translate(var(--x), var(--y)) rotate(0deg) scale(1); opacity: 1; }
-    100% { transform: translate(calc(var(--x) * 2), calc(var(--y) - 300px)) rotate(30deg) scale(0.5); opacity: 0; }
+    to { transform: translate(var(--x), var(--y)) rotate(25deg); opacity: 0; }
 }
 
 /* Confetti */
 .confetti {
     position: fixed;
-    width: 10px;
-    height: 10px;
-    background-color: pink;
+    width: 8px;
+    height: 8px;
     opacity: 0.9;
-    pointer-events: none;
     z-index: 998;
-    transform: rotate(45deg);
     animation: confettiFall 3s linear forwards;
 }
 
 @keyframes confettiFall {
-    0% { transform: translate(0,0) rotate(0deg); opacity: 1; }
-    100% { transform: translate(var(--cx), var(--cy)) rotate(720deg); opacity: 0; }
+    to { transform: translate(var(--cx), var(--cy)) rotate(720deg); opacity: 0; }
 }
 
-/* Sparkle overlay */
+/* Sparkles */
 .sparkle {
     position: fixed;
     width: 6px;
     height: 6px;
-    background: radial-gradient(circle, #fff8, #ff4d6d00);
+    background: radial-gradient(circle, #fff, transparent);
     border-radius: 50%;
-    pointer-events: none;
     z-index: 997;
     animation: sparkleTwinkle 2s ease-in-out forwards;
 }
 
 @keyframes sparkleTwinkle {
-    0% { opacity: 0; transform: scale(0.3) rotate(0deg); }
-    50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
-    100% { opacity: 0; transform: scale(0) rotate(360deg); }
-}
-
-/* Make sure hearts/confetti scale nicely on small screens */
-@media (max-width: 600px) {
-    .heart { width: 14px; height: 14px; }
-    .heart::before, .heart::after { width: 14px; height: 14px; }
-    .confetti { width: 7px; height: 7px; }
-    .sparkle { width: 4px; height: 4px; }
-    .proposal h1 { font-size: 32px; }
-    .proposal h2 { font-size: 20px; }
+    50% { opacity: 1; transform: scale(1.2); }
+    100% { opacity: 0; }
 }
 </style>
 </head>
@@ -248,11 +225,13 @@ button {
         <img src="photos.jpg.jpeg" class="photo">
     </div>
 
-    <h1>Shilpa ❤️</h1>
+    <h1>Shilpa Ji ❤️</h1>
+
     <p>
         From quiet moments to loud laughter,<br>
         every version of life feels right with you.
     </p>
+
     <p>
         I don’t want perfect days,<br>
         I want <b>all my days with you</b>.
@@ -271,18 +250,19 @@ button {
 </div>
 
 <script>
-/* Particles */
+/* Background particles */
 const particles = document.querySelector('.particles');
 setInterval(() => {
     const p = document.createElement('span');
     p.style.left = Math.random() * 100 + 'vw';
-    p.style.animationDuration = (10 + Math.random() * 10) + 's';
     particles.appendChild(p);
-    setTimeout(() => p.remove(), 22000);
+    setTimeout(() => p.remove(), 20000);
 }, 350);
 
-/* NO button fun */
+/* No button movement */
 const noBtn = document.getElementById("noBtn");
+noBtn.addEventListener("mouseenter", moveNo);
+noBtn.addEventListener("touchstart", e => { e.preventDefault(); moveNo(); });
 
 function moveNo() {
     noBtn.style.position = "absolute";
@@ -290,73 +270,49 @@ function moveNo() {
     noBtn.style.top = Math.random() * (window.innerHeight - 80) + "px";
 }
 
-if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
-    noBtn.addEventListener("mouseenter", moveNo);
-}
-
-if ("ontouchstart" in window) {
-    noBtn.addEventListener("touchstart", e => {
-        e.preventDefault();
-        moveNo();
-    });
-}
-
-/* Yes button fun with hearts, confetti, and sparkle */
-function accept(event) {
+/* Yes celebration */
+function accept(e) {
     document.getElementById("proposal").classList.add("show");
 
-    const rect = event.target.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
+    const r = e.target.getBoundingClientRect();
+    const x = r.left + r.width / 2;
+    const y = r.top + r.height / 2;
 
-    // Heart explosion
-    for (let i = 0; i < 60; i++) createHeart(centerX, centerY);
-
-    // Floating hearts from bottom
-    for (let i = 0; i < 40; i++) createHeart(Math.random() * window.innerWidth, window.innerHeight + 50);
-
-    // Confetti burst
-    for (let i = 0; i < 100; i++) createConfetti(centerX, centerY);
-
-    // Sparkle overlay
-    for (let i = 0; i < 80; i++) createSparkle(centerX, centerY);
+    for (let i = 0; i < 60; i++) heart(x, y);
+    for (let i = 0; i < 80; i++) sparkle(x, y);
+    for (let i = 0; i < 100; i++) confetti(x, y);
 }
 
-function createHeart(startX, startY) {
-    const heart = document.createElement('div');
-    heart.classList.add('heart');
-    heart.style.left = startX + "px";
-    heart.style.top = startY + "px";
-    const xMove = (Math.random() - 0.5) * 400 + "px";
-    const yMove = - (150 + Math.random() * 400) + "px";
-    heart.style.setProperty('--x', xMove);
-    heart.style.setProperty('--y', yMove);
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 3500);
+function heart(x,y){
+    const h=document.createElement("div");
+    h.className="heart";
+    h.style.left=x+"px";
+    h.style.top=y+"px";
+    h.style.setProperty("--x",(Math.random()-0.5)*500+"px");
+    h.style.setProperty("--y",-Math.random()*500+"px");
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),3000);
 }
 
-function createConfetti(startX, startY) {
-    const conf = document.createElement('div');
-    conf.classList.add('confetti');
-    conf.style.left = startX + "px";
-    conf.style.top = startY + "px";
-    const xMove = (Math.random() - 0.5) * 600 + "px";
-    const yMove = 300 + Math.random() * 400 + "px";
-    conf.style.setProperty('--cx', xMove);
-    conf.style.setProperty('--cy', yMove);
-    const colors = ["#ff4d6d","#ff758c","#ffc0cb","#ffb3c6","#ff6b81"];
-    conf.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
-    document.body.appendChild(conf);
-    setTimeout(() => conf.remove(), 3000);
+function confetti(x,y){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=x+"px";
+    c.style.top=y+"px";
+    c.style.background=["#ff4d6d","#ff758c","#ffc0cb"][Math.floor(Math.random()*3)];
+    c.style.setProperty("--cx",(Math.random()-0.5)*600+"px");
+    c.style.setProperty("--cy",(300+Math.random()*400)+"px");
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
 }
 
-function createSparkle(centerX, centerY) {
-    const sparkle = document.createElement('div');
-    sparkle.classList.add('sparkle');
-    sparkle.style.left = (centerX + (Math.random() - 0.5) * 400) + "px";
-    sparkle.style.top = (centerY + (Math.random() - 0.5) * 400) + "px";
-    document.body.appendChild(sparkle);
-    setTimeout(() => sparkle.remove(), 2500);
+function sparkle(x,y){
+    const s=document.createElement("div");
+    s.className="sparkle";
+    s.style.left=(x+(Math.random()-0.5)*400)+"px";
+    s.style.top=(y+(Math.random()-0.5)*400)+"px";
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),2000);
 }
 </script>
 
