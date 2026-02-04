@@ -16,7 +16,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow-x: hidden;
     color: white;
     padding: 16px;
 }
@@ -36,6 +36,14 @@ body {
     to { transform: translateY(-130vh); opacity: 1; }
 }
 
+/* Container */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+}
+
 /* Card */
 .card {
     background: rgba(255,255,255,0.95);
@@ -47,7 +55,6 @@ body {
     text-align: center;
     box-shadow: 0 30px 80px rgba(0,0,0,0.6);
     animation: fadeIn 1.4s ease;
-    z-index: 2;
 }
 
 @keyframes fadeIn {
@@ -111,43 +118,38 @@ button {
     color: #444;
 }
 
-/* Valentine Screen */
-.proposal {
-    position: fixed;
-    inset: 0;
-    background: radial-gradient(circle, #1b1b1b, #000);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+/* Valentine Question BELOW card */
+.valentine {
+    margin-top: 28px;
     text-align: center;
     opacity: 0;
-    pointer-events: none;
-    transition: opacity 1.5s ease;
+    transform: translateY(20px);
+    transition: all 1.2s ease;
 }
 
-.proposal.show {
+.valentine.show {
     opacity: 1;
-    pointer-events: auto;
+    transform: translateY(0);
 }
 
-.proposal h1 {
-    font-size: 42px;
+.valentine h2 {
+    font-size: 36px;
     color: #ffb3c6;
+    margin-bottom: 8px;
 }
 
-.proposal h2 {
-    font-size: 28px;
-    margin-top: 10px;
+.valentine h3 {
+    font-size: 22px;
+    font-weight: normal;
 }
 
-/* Ring pulse */
+/* Ring */
 .ring {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     border: 3px solid #ffb3c6;
     border-radius: 50%;
-    margin: 25px auto;
+    margin: 20px auto;
     animation: ringPulse 2s infinite;
 }
 
@@ -155,7 +157,7 @@ button {
     50% { transform: scale(1.15); box-shadow: 0 0 35px #ff4d6d; }
 }
 
-/* 3D Hearts */
+/* Hearts */
 .heart {
     position: fixed;
     width: 18px;
@@ -189,7 +191,6 @@ button {
     position: fixed;
     width: 8px;
     height: 8px;
-    opacity: 0.9;
     z-index: 998;
     animation: confettiFall 3s linear forwards;
 }
@@ -220,37 +221,42 @@ button {
 
 <div class="particles"></div>
 
-<div class="card">
-    <div class="photo-wrapper">
-        <img src="photos.jpg.jpeg" class="photo">
+<div class="wrapper">
+
+    <div class="card">
+        <div class="photo-wrapper">
+            <img src="photos.jpg.jpeg" class="photo">
+        </div>
+
+        <h1>Shilpa Ji ❤️</h1>
+
+        <p>
+            From quiet moments to loud laughter,<br>
+            every version of life feels right with you.
+        </p>
+
+        <p>
+            I don’t want perfect days,<br>
+            I want <b>all my days with you</b>.
+        </p>
+
+        <div class="buttons">
+            <button id="yesBtn" onclick="accept(event)">Yes, forever 💍</button>
+            <button id="noBtn">No 🙈</button>
+        </div>
     </div>
 
-    <h1>Shilpa Ji ❤️</h1>
-
-    <p>
-        From quiet moments to loud laughter,<br>
-        every version of life feels right with you.
-    </p>
-
-    <p>
-        I don’t want perfect days,<br>
-        I want <b>all my days with you</b>.
-    </p>
-
-    <div class="buttons">
-        <button id="yesBtn" onclick="accept(event)">Yes, forever 💍</button>
-        <button id="noBtn">No 🙈</button>
+    <!-- Valentine question BELOW -->
+    <div class="valentine" id="valentine">
+        <div class="ring"></div>
+        <h2>Will you be my Valentine?</h2>
+        <h3>— Sumeet</h3>
     </div>
-</div>
 
-<div class="proposal" id="proposal">
-    <div class="ring"></div>
-    <h1>Will you be my Valentine?</h1>
-    <h2>— Sumeet</h2>
 </div>
 
 <script>
-/* Background particles */
+/* Particles */
 const particles = document.querySelector('.particles');
 setInterval(() => {
     const p = document.createElement('span');
@@ -259,7 +265,7 @@ setInterval(() => {
     setTimeout(() => p.remove(), 20000);
 }, 350);
 
-/* No button movement */
+/* No button escape */
 const noBtn = document.getElementById("noBtn");
 noBtn.addEventListener("mouseenter", moveNo);
 noBtn.addEventListener("touchstart", e => { e.preventDefault(); moveNo(); });
@@ -272,7 +278,7 @@ function moveNo() {
 
 /* Yes celebration */
 function accept(e) {
-    document.getElementById("proposal").classList.add("show");
+    document.getElementById("valentine").classList.add("show");
 
     const r = e.target.getBoundingClientRect();
     const x = r.left + r.width / 2;
